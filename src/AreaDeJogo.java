@@ -25,6 +25,11 @@ public class AreaDeJogo {
     public void tentarMover(int posicaoDeDestino) throws MovimentoInvalidoException, CapturaException {
         int posicaoAtual = (turnoAtual == Turno.CABRITO) ? posicaoCabrito : posicaoCarcara;
 
+        // Se o jogador clicar onde já está, cancela tudo.
+        if (posicaoDeDestino == posicaoAtual) {
+            throw new MovimentoInvalidoException("Você já está nesta posição!");
+        }
+
         // --- Verificações do Cabrito ---
         if (turnoAtual == Turno.CABRITO) {
             //  Tentou mover para cima do Carcará
@@ -81,5 +86,9 @@ public class AreaDeJogo {
     }
     public int getTotalDeJogadas(){
         return this.totalDeJogadas;
+    }
+
+    public int[][] getMatrizAdjacencia() {
+        return this.matrizAdjacencia;
     }
 }

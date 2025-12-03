@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Image;
+import java.awt.Dimension;
 
 
 public class JanelaJogo extends javax.swing.JFrame {
@@ -66,8 +67,7 @@ public class JanelaJogo extends javax.swing.JFrame {
             }
         });
 
-        // 5. CONFIGURAR O LAYOUT (A CORREÇÃO ESTÁ AQUI) 🛠️
-        // Definimos que a janela usa BorderLayout (Norte, Sul, Leste, Oeste, Centro)
+
         setLayout(new BorderLayout());
 
         // Inicializamos o texto
@@ -102,7 +102,10 @@ public class JanelaJogo extends javax.swing.JFrame {
     private void configurarBotao(JButton botao, int posicao){
         botao.setBackground(Color.LIGHT_GRAY);
         botao.setForeground(Color.BLACK);
-        botao.setFont(new Font("Arial", Font.BOLD, 25));
+
+        botao.setFont(new Font("Arial", Font.BOLD, 40));
+
+        botao.setPreferredSize(new Dimension(250, 150));
         botao.setFocusPainted(false);
         botao.setBorder(new javax.swing.border.LineBorder(Color.BLACK, 2, true));
 
@@ -132,26 +135,37 @@ public class JanelaJogo extends javax.swing.JFrame {
 
     private void atualizarInterface() {
         JButton[] botoes = {botao0, botao1, botao2, botao3, botao4, botao5};
+        int[][] matriz = jogo.getMatrizAdjacencia();
 
-
-        for (JButton botao : botoes) {
-            botao.setText("");
-            botao.setIcon(null); // Limpa qualquer ícone anterior
+        int posicaoAtual;
+        if (jogo.getTurnoAtual() == Turno.CABRITO) {
+            posicaoAtual = jogo.getPosicaoCabrito();
+        } else {
+            posicaoAtual = jogo.getPosicaoCarcara();
         }
+
+        for (int i = 0; i< botoes.length; i ++){
+            botoes[i].setText("");
+            botoes[i].setBackground(Color.LIGHT_GRAY);
+            botoes[i].setBorder(new javax.swing.border.LineBorder(Color.BLACK, 2, true));
+
+            if (matriz[posicaoAtual][i] == 1){
+                botoes[i].setBackground(new Color(144,238,144));
+            }
+        }
+
 
         int posCabrito = jogo.getPosicaoCabrito();
         int posCarcara = jogo.getPosicaoCarcara();
 
-        // Desenha o Cabrito
         if (botoes[posCabrito] != null) {
             botoes[posCabrito].setText("Cabrito");
         }
 
-        // Desenha o Carcará
-        // (A variável iconeCarcara não existe mais, usamos apenas o texto)
         if (botoes[posCarcara] != null) {
             botoes[posCarcara].setText("Carcara");
         }
+        repaint();
     }
 
     private void atualizarStatus() {
